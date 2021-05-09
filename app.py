@@ -46,7 +46,7 @@ for i in range(1,len(TICKER)):
 # 데이터타입(Date)변환 문제로 csv 저장 후, 다시 불러옵니다. (파일 경로 설정 필요!!)
 df = df.reset_index().rename(columns={"index": "id"})
 df.to_csv('pricevolume.csv', index=False, encoding='cp949')
-df = pd.read_csv('..../pricevolume.csv')
+df = pd.read_csv('C:/Users/ysj/PycharmProjects/datepicker_chart/pricevolume.csv')
 
 availble_TICKER = df['TICKER'].unique()
 
@@ -55,7 +55,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.H2(children='PRICE-CHART by date'),
+    html.H2(children='PRICE-CHART by date, indicator'),
     dcc.DatePickerRange(
         id='my-date-picker-range',
         min_date_allowed=date(1995, 8, 5),
@@ -103,4 +103,4 @@ def update_graph(TICKER_column_name, indicator, start_date, end_date):
     }
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, port = 9999)
