@@ -45,9 +45,9 @@ for i in range(1,len(TICKER)):
 # 데이터타입(Date)변환 문제로 csv 저장 후, 다시 불러옵니다. (파일 경로 설정 필요!!)
 df = df.reset_index().rename(columns={"index": "id"})
 df.to_csv('pricevolume.csv', index=False, encoding='cp949')
-df = pd.read_csv('...../pricevolume.csv')
+df = pd.read_csv('..../pricevolume.csv')
 
-availble_cell = df['TICKER'].unique()
+availble_TICKER = df['TICKER'].unique()
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -60,7 +60,7 @@ app.layout = html.Div([
         min_date_allowed=date(1995, 8, 5),
         max_date_allowed=date(2030, 9, 19),
         initial_visible_month=date(2020, 1, 1),
-        start_date=date(2020, 1, 1),
+        start_date=date(2019, 1, 1),
         end_date=date(2020, 1, 1),
         display_format = 'YYYY/MM/DD'
     ),
@@ -69,9 +69,14 @@ app.layout = html.Div([
     Select your TICKER !!
     '''),
     dcc.Dropdown(
-        id='cell-name-xaxis-column',
-        options=[{'label': i, 'value': i} for i in availble_cell],
+        id='cell-name-TICKER-column',
+        options=[{'label': i, 'value': i} for i in availble_TICKER],
         value='AAPL'
+    ),
+    dcc.Dropdown(
+        id='cell-name-indicator-column',
+        options=[{'label': s, 'value': s} for s in ['Volume','Return(cum)','Close']],
+        value='Volume'
     ),
     dcc.Graph(
         style={'height': 500},
@@ -82,14 +87,16 @@ app.layout = html.Div([
 
 @app.callback(
     Output('my-graph', 'figure'),
-    [Input('cell-name-xaxis-column', 'value'),
-     Input('my-date-picker-range', 'start_date')])
-def update_graph(xaxis_column_name,start_date):
-    dff = df[df['Date'] >= start_date]
+    [Input('cell-name-TICKER-column', 'value'),
+     Input('cell-name-indicator-column', 'value'),
+     Input('my-date-picker-range', 'start_date'),
+     Input('my-date-picker-range', 'end_date')])
+def update_graph(TICKER_column_name, indicator, start_date, end_date):
+    dff = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
     return {
         'data': [dict(
             x=dff['Date'],
-            y=dff[dff['TICKER'] == xaxis_column_name]['Close'],
+            y=dff[dff['TICKER'] == TICKER_column_name][indicator],
             mode='line'
         )],
     }
