@@ -2,8 +2,9 @@
 
 # 특정 종목 가격을 기간별로 확인할 수 있는 함수
 # 대상 기간과 관심 TICKER를 입력합니다.
-# date.picker의 날짜를 입력합니다. (1차)
-# 입력된 날짜를 기점으로 Graph를 산출합니다. (2차)
+# date.picker의 기간을 입력합니다. (1차)
+# dropdown의 indicagto를 입력합니다 (2차)
+# 입력된 기간과, indicator에 해당하는 데이터를 호출 후 Graph를 산출합니다. (3차)
 
 import dash
 from dash.dependencies import Input, Output
@@ -17,7 +18,7 @@ import pandas as pd
 # TICKER를 입력합니다.
 TICKER = ['AAPL','TSLA','MSFT','AMZN','GOOGL','FB']
 
-start = date(2018, 1, 1)
+start = date(2016, 1, 1)
 end = datetime.datetime.now()
 
 # 수익률, 거래량 데이터를 산출합니다.
@@ -31,7 +32,7 @@ dfs.loc[:,'TICKER'] = TICKER[0]
 df = dfs
 
 for i in range(1,len(TICKER)):
-    start = date(2018, 1, 1)
+    start = date(2016, 1, 1)
     end = datetime.datetime.now()
     dfs = web.DataReader(TICKER[i], 'yahoo', start, end)
     dfs.reset_index(inplace=True)
