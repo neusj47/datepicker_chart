@@ -46,7 +46,7 @@ for i in range(1,len(TICKER)):
 # 데이터타입(Date)변환 문제로 csv 저장 후, 다시 불러옵니다. (파일 경로 설정 필요!!)
 df = df.reset_index().rename(columns={"index": "id"})
 df.to_csv('pricevolume.csv', index=False, encoding='cp949')
-df = pd.read_csv('C:/Users/ysj/PycharmProjects/datepicker_chart/pricevolume.csv')
+df = pd.read_csv('..../pricevolume.csv')
 
 availble_TICKER = df['TICKER'].unique()
 
